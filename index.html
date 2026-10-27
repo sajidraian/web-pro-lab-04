@@ -1,0 +1,126 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Student Registration System</h1>
+        <p class="subtitle">Enter student information to register.</p>
+
+        <form id="registrationForm" novalidate>
+
+            <!-- Student ID -->
+            <div class="form-group">
+                <label for="studentId">Student ID</label>
+                <input
+                    type="text"
+                    id="studentId"
+                    placeholder="CSE-2026-001"
+                    autocomplete="off"
+                    required
+                >
+                <small class="error-message"></small>
+            </div>
+
+            <!-- Full Name -->
+            <div class="form-group">
+                <label for="fullName">Full Name</label>
+                <input
+                    type="text"
+                    id="fullName"
+                    placeholder="Enter full name"
+                    autocomplete="name"
+                    required
+                >
+                <small class="error-message"></small>
+            </div>
+
+            <!-- Email -->
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="student@example.com"
+                    autocomplete="email"
+                    required
+                >
+                <small class="error-message"></small>
+            </div>
+
+            <!-- Phone -->
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input
+                    type="tel"
+                    id="phone"
+                    placeholder="01XXXXXXXXX"
+                    maxlength="11"
+                    autocomplete="tel"
+                    required
+                >
+                <small class="error-message"></small>
+            </div>
+
+            <!-- Password -->
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="At least 8 characters"
+                    autocomplete="new-password"
+                    required
+                >
+                <small class="error-message"></small>
+            </div>
+
+            <div class="button-group">
+                <button type="submit" class="submit-btn">
+                    Register Student
+                </button>
+
+                <button type="reset" class="reset-btn">
+                    Reset Form
+                </button>
+            </div>
+
+            <p id="successMessage" role="status" aria-live="polite"></p>
+
+        </form>
+
+        <!-- Student Records Table -->
+        <section class="table-section">
+            <h2>Registered Students</h2>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Student ID</th>
+                            <th>Full Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="studentTableBody">
+                        <!-- Student records will be added here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <p id="emptyMessage">No students registered yet.</p>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+```
