@@ -1,126 +1,368 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Student Registration System</title>
+
     <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
 </head>
+
 <body>
 
-    <div class="container">
-        <h1>Student Registration System</h1>
-        <p class="subtitle">Enter student information to register.</p>
+<div class="app">
 
-        <form id="registrationForm" novalidate>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-icon">🎓</div>
+            <div>
+                <h2>EduPortal</h2>
+                <p>Student Management</p>
+            </div>
+        </div>
 
-            <!-- Student ID -->
-            <div class="form-group">
-                <label for="studentId">Student ID</label>
-                <input
-                    type="text"
-                    id="studentId"
-                    placeholder="CSE-2026-001"
-                    autocomplete="off"
-                    required
-                >
-                <small class="error-message"></small>
+        <div class="sidebar-label">MAIN MENU</div>
+
+        <nav class="navigation">
+            <a href="#dashboard" class="nav-link active">
+                <span>▦</span> Dashboard
+            </a>
+
+            <a href="#registration" class="nav-link">
+                <span>＋</span> Registration
+            </a>
+
+            <a href="#students" class="nav-link">
+                <span>☷</span> Student Records
+            </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="profile-avatar">A</div>
+            <div>
+                <strong>Administrator</strong>
+                <p>Academic Office</p>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main content -->
+    <main class="main-content" id="dashboard">
+
+        <header class="topbar">
+            <div>
+                <p class="eyebrow">STUDENT INFORMATION SYSTEM</p>
+                <h1>Student Dashboard</h1>
+                <p class="subtitle">
+                    Manage student registrations and academic records.
+                </p>
             </div>
 
-            <!-- Full Name -->
-            <div class="form-group">
-                <label for="fullName">Full Name</label>
-                <input
-                    type="text"
-                    id="fullName"
-                    placeholder="Enter full name"
-                    autocomplete="name"
-                    required
-                >
-                <small class="error-message"></small>
+            <button
+                class="button button-primary"
+                id="newStudentButton"
+                type="button">
+                + New Student
+            </button>
+        </header>
+
+        <!-- Statistics -->
+        <section class="stats-grid" aria-label="Student statistics">
+
+            <article class="stat-card">
+                <div class="stat-icon purple">♙</div>
+                <div>
+                    <p>Total Students</p>
+                    <h2 id="totalStudents">0</h2>
+                    <span class="stat-caption">Registered records</span>
+                </div>
+            </article>
+
+            <article class="stat-card">
+                <div class="stat-icon green">✓</div>
+                <div>
+                    <p>Valid Records</p>
+                    <h2 id="validStudents">0</h2>
+                    <span class="stat-caption">Successfully validated</span>
+                </div>
+            </article>
+
+            <article class="stat-card">
+                <div class="stat-icon orange">▤</div>
+                <div>
+                    <p>Current Page</p>
+                    <h2 id="currentPageStat">1</h2>
+                    <span class="stat-caption">Records overview</span>
+                </div>
+            </article>
+        </section>
+
+        <!-- Registration form -->
+        <section class="panel" id="registration">
+
+            <div class="panel-heading">
+                <div>
+                    <h2 id="formTitle">Register a Student</h2>
+                    <p>Enter the student's information below.</p>
+                </div>
+
+                <span class="required-note">
+                    * Required fields
+                </span>
             </div>
 
-            <!-- Email -->
-            <div class="form-group">
-                <label for="email">Email Address</label>
-                <input
-                    type="email"
-                    id="email"
-                    placeholder="student@example.com"
-                    autocomplete="email"
-                    required
-                >
-                <small class="error-message"></small>
+            <div id="formMessage"
+                 class="message"
+                 role="status"
+                 aria-live="polite"
+                 hidden>
             </div>
 
-            <!-- Phone -->
-            <div class="form-group">
-                <label for="phone">Phone Number</label>
-                <input
-                    type="tel"
-                    id="phone"
-                    placeholder="01XXXXXXXXX"
-                    maxlength="11"
-                    autocomplete="tel"
-                    required
-                >
-                <small class="error-message"></small>
-            </div>
+            <form id="studentForm" novalidate>
 
-            <!-- Password -->
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input
-                    type="password"
-                    id="password"
-                    placeholder="At least 8 characters"
-                    autocomplete="new-password"
-                    required
-                >
-                <small class="error-message"></small>
-            </div>
+                <input type="hidden" id="editingStudentId">
 
-            <div class="button-group">
-                <button type="submit" class="submit-btn">
-                    Register Student
+                <div class="form-grid">
+
+                    <!-- Student ID -->
+                    <div class="form-group">
+                        <label for="studentId">Student ID *</label>
+
+                        <input
+                            type="text"
+                            id="studentId"
+                            placeholder="CSE-2026-001"
+                            autocomplete="off"
+                            required>
+
+                        <small class="hint">
+                            Format: CSE-2026-001
+                        </small>
+
+                        <small class="field-error" id="studentIdError"></small>
+                    </div>
+
+                    <!-- Full name -->
+                    <div class="form-group">
+                        <label for="fullName">Full Name *</label>
+
+                        <input
+                            type="text"
+                            id="fullName"
+                            placeholder="Enter full name"
+                            autocomplete="name"
+                            required>
+
+                        <small class="hint">
+                            2–40 letters and spaces
+                        </small>
+
+                        <small class="field-error" id="fullNameError"></small>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+
+                        <input
+                            type="email"
+                            id="email"
+                            placeholder="student@example.com"
+                            autocomplete="email"
+                            required>
+
+                        <small class="hint">
+                            Example: student@example.com
+                        </small>
+
+                        <small class="field-error" id="emailError"></small>
+                    </div>
+
+                    <!-- Phone -->
+                    <div class="form-group">
+                        <label for="phone">Phone Number *</label>
+
+                        <input
+                            type="tel"
+                            id="phone"
+                            placeholder="01XXXXXXXXX"
+                            inputmode="numeric"
+                            maxlength="11"
+                            autocomplete="tel"
+                            required>
+
+                        <small class="hint">
+                            11 digits, starting with 01
+                        </small>
+
+                        <small class="field-error" id="phoneError"></small>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="form-group full-width">
+                        <label for="password">Password *</label>
+
+                        <input
+                            type="password"
+                            id="password"
+                            placeholder="At least 8 characters, including letters and numbers"
+                            autocomplete="new-password"
+                            required>
+
+                        <small class="hint" id="passwordHint">
+                            Must contain at least one letter and one digit.
+                        </small>
+
+                        <small class="field-error" id="passwordError"></small>
+                    </div>
+
+                </div>
+
+                <div class="form-actions">
+
+                    <button
+                        type="button"
+                        id="resetButton"
+                        class="button button-secondary">
+                        ↻ Reset
+                    </button>
+
+                    <button
+                        type="submit"
+                        id="submitButton"
+                        class="button button-primary">
+                        + Register Student
+                    </button>
+
+                </div>
+
+            </form>
+        </section>
+
+        <!-- Student records -->
+        <section class="panel" id="students">
+
+            <div class="panel-heading records-heading">
+                <div>
+                    <h2>Student Records</h2>
+                    <p>Search, sort, edit, or export student information.</p>
+                </div>
+
+                <button
+                    type="button"
+                    class="button button-success"
+                    id="exportButton">
+                    ↓ Export CSV
                 </button>
-
-                <button type="reset" class="reset-btn">
-                    Reset Form
-                </button>
             </div>
 
-            <p id="successMessage" role="status" aria-live="polite"></p>
+            <div class="toolbar">
 
-        </form>
+                <div class="search-box">
+                    <span>⌕</span>
 
-        <!-- Student Records Table -->
-        <section class="table-section">
-            <h2>Registered Students</h2>
+                    <input
+                        type="search"
+                        id="searchInput"
+                        placeholder="Search ID, name, email or phone..."
+                        aria-label="Search student records">
+                </div>
 
-            <div class="table-wrapper">
+                <label class="page-size-label" for="pageSize">
+                    Show
+                    <select id="pageSize">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                    </select>
+                    entries
+                </label>
+
+            </div>
+
+            <div class="table-container">
                 <table>
                     <thead>
                         <tr>
-                            <th>Student ID</th>
-                            <th>Full Name</th>
-                            <th>Email</th>
-                            <th>Phone</th>
+                            <th>
+                                <button class="sort-button"
+                                        data-sort="studentId"
+                                        type="button">
+                                    Student ID ↕
+                                </button>
+                            </th>
+
+                            <th>
+                                <button class="sort-button"
+                                        data-sort="fullName"
+                                        type="button">
+                                    Full Name ↕
+                                </button>
+                            </th>
+
+                            <th>Email Address</th>
+                            <th>Phone Number</th>
+                            <th>Registration Date</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
 
                     <tbody id="studentTableBody">
-                        <!-- Student records will be added here -->
+                        <tr>
+                            <td colspan="6" class="empty-state">
+                                No students registered yet.
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
 
-            <p id="emptyMessage">No students registered yet.</p>
-        </section>
-    </div>
+            <div class="table-footer">
+                <p id="tableInfo">Showing 0 records</p>
 
-    <script src="script.js"></script>
+                <div class="pagination" id="pagination"></div>
+            </div>
+
+        </section>
+
+        <footer class="footer">
+            Student Registration System · Academic Management
+        </footer>
+
+    </main>
+</div>
+
+<!-- Accessible confirmation dialog -->
+<dialog id="confirmDialog" class="confirm-dialog">
+    <div class="dialog-content">
+        <div class="dialog-icon">!</div>
+
+        <h2 id="dialogTitle">Confirm action</h2>
+
+        <p id="dialogMessage">
+            Are you sure you want to continue?
+        </p>
+
+        <div class="dialog-actions">
+            <button
+                type="button"
+                id="cancelDialog"
+                class="button button-secondary">
+                Cancel
+            </button>
+
+            <button
+                type="button"
+                id="confirmDialogButton"
+                class="button button-danger">
+                Confirm
+            </button>
+        </div>
+    </div>
+</dialog>
+
 </body>
 </html>
-```
